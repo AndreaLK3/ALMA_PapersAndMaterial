@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://ogp.me/ns/fb#">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="Hi. I'm a PhD student at Johns Hopkis University Center for Language and Speech Processing (JHU CLSP). Machine learning and natural language are fascinating.">
+		<meta property="og:image" content="http://sjmielke.com/fb-share.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Can you compare perplexity across different segmentations? - Sebastian J. Mielke</title>
+		
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="theme-color" content="#ffffff">
+		
+		<link rel="alternate" type="application/rss+xml" href="feed.xml" title="Sebastian J. Mielke - Blog">
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
+		<link rel="stylesheet" href="/style.css">
+		<!-- Piwik w/o noscript-pixel -->
+		<script type="text/javascript">
+			var _paq = _paq || [];
+			_paq.push(['trackPageView']);
+			_paq.push(['enableLinkTracking']);
+			(function() {
+				var u="//piwik.jio.li/";
+				_paq.push(['setTrackerUrl', u+'piwik.php']);
+				_paq.push(['setSiteId', '1']);
+				var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+				g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+				})();
+		</script>
+		<!-- End Piwik Code -->
+	</head>
+	<body>
+		<header>
+			<div id="head-pre">
+				<a href="/index.htm"><h1>Sebastian J. Mielke</h1></a>
+			</div>
+			<nav>
+				<a href="/index.htm">home</a>
+				<a href="/blog.htm">blog</a>
+				<a href="/work.htm">work</a>
+				<a href="/cv.htm">curriculum vitæ</a>
+				<a href="https://twitter.com/sjmielke">twitter</a>
+				<a href="https://github.com/sjmielke">github</a>
+				<a href="https://soundcloud.com/sjmmusic">soundcloud</a>
+			</nav>
+			<div id="head-left-post">
+				<a href="/index.htm"><h1>Sebastian J. Mielke</h1></a><aside class="unicode">νΚНЫƿΒЎЄʔねЦヱ책⩴れろСケ색≝Пε년☞И⚲わ♮μ◍Ο⚘½⚐Чシ☼ДえТ♖ЛソラΨ♙℥けレヌη⨋Ёワ약⨳なοエ이Ωサ℮てЈЮΙトυΠЂネ⛁방æΣЋ취クО급ХΓ제ξĐΔΜウθδ∡チ등ヰカ관♭회⧉청Вし⚄þら♩ГλちШ※Њ⪟Ηユ±용ςφЗ¼κアΝЬЇ개⨖☲⚧Љρ호☙안ЩℵツЀФΥι≇АσΑ♪고보사πЪ⋈⊹ΕЏヤΧƷǷΖよζχτに정ЃミあモヲΛ∝Ґ⟗К휴ゑ⧥コ광ψΡα⌘¶МЙハΘ♯γðほ♲록검ЖうはЭ☿인Φ∴⚇ロ♾Р정ÞのЌБヘルЅІÆΞフゐ₰침β☈⋘ʒΤω⌦УЯЕ¾≬소Ѝ<!-- "broken" on mac: ⚖☸☣⚜⚙⚛ --></aside>
+			</div>
+		</header>
+		<main>
+<article>
+<h2 class="blogposthead">Can you compare perplexity across different segmentations?</h2>
+<span class="blogpostdate">2019-04-23</span>
+<br /><br />
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+<p>
+	In recent years, models in NLP have strayed from the old assumption that the word is the atomic unit of choice: subword-based models (using <a href="https://github.com/rsennrich/subword-nmt">BPE</a> or <a href="https://github.com/google/sentencepiece">sentencepiece</a>) and character-based (or even byte-based!) models have proven to be very effective for many tasks, allowing for a small vocabulary size that can still cover all possible occuring text (i.e., that is open-vocabulary).
+	With all this change comes a different question though: can we compare metrics over words with those over characters or subword units?
+	In this post, we will be looking at at metrics for <i>language models</i>, specifically the most popular one: perplexity.
+</p>
+
+<h3 style="margin-top: 2em;">What is perplexity?</h3>
+<p>
+	“Perplexity is the exponentiated average negative log-likelihood per token.” What does that mean?
+	Fundamentally, a language model is a probability distribution that assigns probabilities to entire strings, for example:
+</p>
+<p>
+	\[
+	\begin{align*}
+		p(\texttt{the cat sat on the mat}) &= 0.000000000341\\
+		p(\texttt{the mat sat on the cat}) &= 0.000000000239\\
+		p(\texttt{the cat the on mat mat}) &= 0.000000000001\\
+	\end{align*}
+	\]
+</p>
+<p>
+	These probabilities are extremely low because there are so many sentences that the distribution all has to cover!
+	<sup><a name="fn-back1"><a href="#fn1">[1]</a></a></sup>
+</p>
+<p>
+	Say, the first sentence is our test data. Then, given its likelihood under our model, we can compute a <i>perplexity per word</i>, counting the \(\mathrm{EOS}\) (end of string) as a seventh word:<sup><a name="fn-back2"><a href="#fn2">[2]</a></a></sup>
+	\[ ppl_{word} = \exp\dfrac{-\log 0.000000000341}{6+1} = 22.5 \]
+</p>
+<p>
+	This perplexity is what people usually mean when they say “perplexity”: the perplexity per word on the test data.
+	But we can compute other perplexities, too! The sentence had \(6+1\) words, yes, but it also had \(22+1\) characters:
+	\[ ppl_{word} = \exp\dfrac{-\log 0.000000000341}{22+1} = 2.7 \]
+</p>
+<p>
+	Note how we only changed the denominator! Both these perplexities have an intuitive interpretation: the first one tells us that the model was “trying to pick” between about 23 words, the second one that it had a choice of two to three characters it was usually unsure between. Or more precisely: if we let it guess token by token (i.e., word by word or character by character), on average it would have taken 22.5 tries and 2.7 tries, respectively, to find the right one.<sup><a name="fn-back3"><a href="#fn3">[3]</a></a></sup>
+</p>
+
+<h3 style="margin-top: 2em;">Decomposing the string into tokens</h3>
+<p>
+	If you have seen a standard exposition to language models, you might be a bit unhappy with what we've done so far: we never really established <i>how</i> the probability value of \(0.000000000341\) was calculated!
+	Let's remedy that.
+</p>
+<p>
+	Language models are usually implemented as <i>autoregressive</i> models, i.e., they predict the output piece by piece, each new piece <i>conditioned</i> on the previously generated pieces:
+	\[ p(\texttt{the cat sat}) = p(\texttt{the} | \varepsilon) \cdot p(\texttt{cat} | \texttt{the}) \cdot p(\texttt{sat} | \texttt{the cat}) \cdot p(\mathrm{EOS} | \texttt{the cat sat}) \]
+	where \(\varepsilon\) refers to the empty string and the equality holds true because of the chain rule of probability. This decomposition makes things easy enough: instead of trying to assign probabilities to infinitely many things all at once, we now only have to assign probabilities to a finite vocabulary at each <i>timestep</i> — easy enough with a softmax layer in a neural model.
+</p>
+<p>
+	Now you should see why people report perplexities per word if this is indeed the decomposition they choose! Say a word-based RNN/Transformer language model predicts:
+	\[
+		\begin{align*}
+			p(\texttt{the} | \varepsilon) &= 0.01 \\
+			p(\texttt{cat} | \texttt{the}) &= 0.001 \\
+			p(\texttt{sat} | \texttt{the cat}) &= 0.008 \\
+			p(\mathrm{EOS} | \texttt{the cat sat}) &= 0.04 \\
+		\end{align*}
+	\]
+	\[ \Rightarrow p(\texttt{the cat sat}) = 0.1 \cdot 0.01 \cdot 0.008 \cdot 0.04 = 0.00000032 \]
+</p>
+<p>
+	Then we can of course compute the perplexity as we have before:
+	\[ ppl_{word} = \exp\dfrac{-\log 0.00000032}{3+1} = 42.04 \]
+	But it is common in modern LM implementations to instead just use the token-level probabilities to compute the average:
+	\[ ppl_{word} = \exp\dfrac{-(\log 0.01 + \log 0.001 + \log 0.008 + \log 0.04)}{3+1} = 42.04 \]
+</p>
+
+<h3 style="margin-top: 2em;">Different decompositions</h3>
+<p>
+	Of course, this decomposition is only one of many! If we do our prediction character by character we end up with:
+	\[ p(\texttt{the cat sat}) = p(\texttt{t} | \varepsilon) \cdot p(\texttt{h} | \texttt{t}) \cdot p(\texttt{e} | \texttt{th}) \cdot \ldots \cdot p(\mathrm{EOS} | \texttt{the cat sat}) \]
+	And again we could compute a perplexity, this time over characters:
+	\[ ppl_{char} = \exp\dfrac{-(\log p(\texttt{t} | \varepsilon) + \ldots + \log p(\mathrm{EOS} | \texttt{the cat sat}))}{11+1} = 3.48 \]
+	assuming that indeed the character-level model is equally good (i.e., assigns the entire string the same likelihood) as the word-level model.
+</p>
+<p>
+	Both these decompositions are equally valid — they result in a distribution over the same strings!
+	That is, as long as...
+</p>
+
+<h3 style="margin-top: 2em;">“The importance of being open-vocab” or “What strings does the model cover?”</h3>
+<p>
+	One potential confound we have ignored so far is the fact that word-level models tend to have what is called a “closed vocabulary” — they cannot produce all words but only those that are in its vocabulary. That means that \(\texttt{cat}\) is okay, but \(\texttt{wolpertinger}\) may not be.
+	A word-level model thus could not explain (i.e., assign positive probability to) the sentence \(\texttt{the wolpertinger sat}\) — a character-level model on the other hand would have little issue predicting that novel word one character at a time, yielding a positive, even if small, probability for the entire sentence.
+</p>
+<p>
+	In summary, the character-level model assigns probability to all sorts of novel words, in fact, to infinitely many of them. All this probability mass that it loses on them, the word-level model can use to make \(\texttt{the cat sat}\) and other simple in-vocabulary sentences more likely. Or, on our example, if we imagine that \(\texttt{the cat sat}\) and \(\texttt{the wolpertinger sat}\) were the only two sentences that existed: because of
+	\[ p_{word}(\texttt{the wolpertinger sat}) < p_{char}(\texttt{the wolpertinger sat}) \]
+	we have that
+	\[ p_{word}(\texttt{the cat sat}) > p_{char}(\texttt{the cat sat}) \]
+</p>
+<p>
+	So, in a sense the closed-vocabulary can “cheat” by ignoring all these low-probability words while the character-level model has to spread its probability mass thin over them. Unfair!
+	Specifically, if we evaluate these two models on a test set that doesn't contain any of these novel words, the closed-vocabulary model will end up with a much lower perplexity.<sup><a name="fn-back4"><a href="#fn4">[4]</a></a></sup>
+</p>
+<p>
+	Takeaway: we can only compare distributions on likelihood-based metrics like perplexity if they have support on the exact same set of strings.
+</p>
+<p>
+	Corollary: closed-vocab perplexities and open-vocab perplexities are not comparable at all.
+</p>
+<p>
+	To make this divide more explicit, the open-vocab language modeling community has generally avoided measuring “word-level perplexity” and instead reports “bits per character”, i.e., the average negative log-likelihood over characters, using the dual logarithm.
+</p>
+<p>
+	Finally, it should be said that “word-level == closed-vocab” and “character-level == open-vocab” is roughly true, but only part of the whole story.
+	For one, augmenting word-level models with character-level information can make them open-vocab — and vice versa, augmenting character-level models with word information can help, too (and a number of methods have been proposed to do these things).
+	More critically, however, even a character-level model assumes a closed set of characters — but with the Unicode consortium coming up with new enojis every year, that’s not really correct either. <sup><a name="fn-back5"><a href="#fn5">[5]</a></a></sup>
+</p>
+
+<h3 style="margin-top: 2em;">How then do we compare on, say, subword units?</h3>
+<p>
+	Where in this divide do subword units fall? The big selling point for both BPE and sentencepiece is that they do indeed allow open-vocab language modeling, much like a pure character-level model, but also allow the formation of bigger word-like tokens to simplify the prediction task (shorter sequences == easier modeling for the RNN), i.e., instead of splitting \(\texttt{the deforestation}\) into \(\texttt{t h e _ d e f o r e s t a t i o n}\) we split it into \(\texttt{the de@@ forest@@ ation}\), where @@ signifies that a word isn't finished yet. Because this “splitting” can go down all the way to characters, we will always find a way to cover any string, so we are open-vocab and thus comparable to characters.
+	We are also comparable between different numbers of BPE merges or sentencepiece splits or even between these two different methods!
+</p>
+<p>
+	We should be more explicit: when we say “comparable”, it should be clear that we are not talking about the perplexity per prediction token (i.e., here per subword unit) that is usually reported by your RNNLM toolkit — those are very much not comparable. But the perplexities per character or per word — or really any metric whose denominator does *not* depend on the segmentation — are comparable!
+</p>
+<p>
+	Very practically, consider the segmentations \(s_1 = \texttt{the de@@ forest@@ ation}\) and \(s_2 = \texttt{the defor@@ estation}\). If someone handed you their precomputer perplexities-per-subword unit for these two, say, \(ppl^{sw}_1 = 19\) and \(ppl^{sw}_2 = 24\), you now know that these aren't directly comparable, but you can compute comparable metrics:
+</p>
+<p>
+	First, get the total negative log-likelihood of the entire string:
+	\[
+		\begin{align*}
+			nll_1 &= \log 19 \cdot (4+1) &= 14.7 \\
+			nll_2 &= \log 24 \cdot (3+1) &= 12.7 \\
+		\end{align*}
+	\]
+</p>
+<p>
+	These numbers you can already fairly compare (and you will see that the second model, despite its “higher subword perplexity” is actually the better one), but if you prefer word-level perplexities, you can compute these, too:
+	\[
+		\begin{align*}
+			ppl^w_1 &= \exp\dfrac{14.7}{2+1} &= 134.3 \\
+			ppl^w_2 &= \exp\dfrac{12.7}{2+1} &= 68.9 \\
+		\end{align*}
+	\]
+</p>
+<p>
+	You could even compute character-level perplexities:
+	\[
+		\begin{align*}
+			ppl^c_1 &= \exp\dfrac{14.7}{16+1} &= 2.37 \\
+			ppl^c_2 &= \exp\dfrac{12.7}{16+1} &= 2.11 \\
+		\end{align*}
+	\]
+</p>
+<p>
+	Note that there is a little caveat here: we assume that one string corresponds to exactly one segmentation. That's not quite true, but that problem is a much trickier one.<sup><a name="fn-back6"><a href="#fn6">[6]</a></a></sup>
+</p>
+
+<h3 style="margin-top: 2em;">Conclusion</h3>
+<p>
+	Language models are distributions over strings. The fact that we implement them as autoregressive models over tokens at most changes their support, i.e., whether they can deal with all strings or only those that their vocabulary covers.
+</p>
+<p>
+	Perplexities over different segmentation granularities (i.e., words, subwords, or characters) aren't directly comparable, but the log-likelihoods that are hidden inside them are — and those can always be converted to perplexities for any given level. Fix the level, say words, and you can (and should!) compare.
+</p>
+<p>
+	<i>Thanks to Annabelle Carell, Ryan Cotterell, Jason Eisner, Matthew Francis-Landau, and Chu-Cheng Lin for their proof-reading and suggestions!</i>
+</p>
+
+<h3 style="margin-top: 2em;">Interested in follow-up reading?</h3>
+<p>
+	We used this realization that equal denominators matter in <a href="https://aclweb.org/anthology/papers/N/N18/N18-2085/">our NAACL 2018 paper “Are All Languages Equally Hard to Language-Model?”</a>, to compare language models across different languages even — you should find the idea there fairly obvious after reading this post.
+</p>
+<p>
+	If you are more curious, in <a href="https://arxiv.org/abs/1804.08205">our AAAI 2019 paper “Spell Once, Summon Anywhere: A Two-Level Open-Vocabulary Language Model”</a>, we took this a step farther and compared a likelihood-based metric not only across subword unit segmentations, but even across tokenization — if that tokenization is reversible! If it is, i.e., if ever tokenized string corresponds to exactly one untokenized string, then any distribution (i.e., any language model) we obtain over the tokenized text implies one over the untokenized text — they have the same support and that's all we needed.
+</p>
+
+<br /><hr /><p><ol id="footnotes">
+<li><a name="fn1"></a><p>In fact, there are infinitely many sentences that all should receive positive probability. However, because the infinitely large set of all sentences is still countable, it should not be hard to think of a distribution that can cover these. If you have trouble believing that, consider the <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a> or the <a href="https://en.wikipedia.org/wiki/Geometric_distribution">geometric distribution</a> that also assigns positive probability to the countably infinite set of positive integers. <a href="#fn-back1" class="fn-back">&larrhk;</a></p></li>
+<li><a name="fn2"></a><p>We need an \(\mathrm{EOS}\) symbol to make sure we obtain the probability of the string as an entire string and not just as a prefix of some longer string. This will be more obvious in the next section. <a href="#fn-back2" class="fn-back">&larrhk;</a></p></li>
+<li><a name="fn3"></a><p>This “guessing game” is known as the Shannon Game and is in fact one of the origins of all this theory! Check out <a href="http://languagelog.ldc.upenn.edu/myl/Shannon1950.pdf">the original paper</a> from 1950. <a href="#fn-back3" class="fn-back">&larrhk;</a></p></li>
+<li><a name="fn4"></a><p>Of course, this means that if your open-vocab character-level model still beats a closed-vocab word-level model on this metric, you know that it really is better. In practice, however, that is really hard to achieve — a closed vocabulary usually gives you a very pronounced advantage in these scores that is hard to overcome with just better models. <a href="#fn-back4" class="fn-back">&larrhk;</a></p></li>
+<li><a name="fn5"></a><p>And even if it weren’t, building a character-level model over the thousands of CJK characters sounds like an equally wasteful task. It’s turtles all the way down… to bytes? Bits? <a href="#fn-back5" class="fn-back">&larrhk;</a></p></li>
+<li><a name="fn6"></a><p>It is true that your segmentation tool will give you one segmentation, but that's also not the entire truth: even if the segmentation tool gives you \(\texttt{rain@@ ing}\) as the canonical segmentation of \(\texttt{raining}\), had the RNN over these units produced \(\texttt{rain@@ i@@ n@@ g}\) (and all these things are necessarily in its vocabulary!), we would have just as happily taken it. So, the issue is that \(p(\texttt{raining})\) is not just \(\texttt{rain@@ ing}\), but the sum of all probabilities for segmented strings that are consistent with this string (a set way too large to enumerate)!
+	Is that an issue in practice? Most likely not. We found that in our experiments for <a href="https://arxiv.org/abs/1804.08205">this paper</a> the difference was neglegible. Still, make claims of a BPE model being worse in likelihood with some caution, lest you forget these other segmentations! <a href="#fn-back6" class="fn-back">&larrhk;</a></p></li>
+</ol></p>
+</article>
+		</main>
+		<footer>
+			<div>
+				&copy; Sebastian Mielke 2019, <noscript style="display: inline;"><img src="//piwik.jio.li/piwik.php?idsite=1" style="border:0;" alt="" /></noscript> made with the obligatory &hearts; and a simple bash script
+				<br />
+				✉ <tt>&lt;my three initials&gt;@&lt;this domain&gt;</tt>, <a href="http://users.ifsr.de/~mielke/0x72BC9DEA.asc">PGP certificate</a>
+			</div>
+			<div style="float: right;">
+				<a href="/imprint.htm">legal/imprint</a>
+			</div>
+		</footer>
+	</body>
+</html>

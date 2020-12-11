@@ -1,0 +1,271 @@
+<html><head><style>
+body{font-family:Helvetica;font-size:11pt;color:#000000;font-style:normal;font-weight:normal}
+table{border-collapse:collapse;border-top:1px solid black;border-bottom:1px solid black;padding:0px}
+.rowhead{border-top:1px solid black;border-bottom:1px solid black;background-color:#e4e4e4}
+th{padding:4px;border:none;font-weight:bold;background-color:#e4e4e4}
+td{padding:4px;vertical-align:top}
+.roweven{background-color:#eeeeee}
+.rowodd{background-color:#f8f8f8}
+.tfirstcol{text-align:left}
+.tothercol{text-align:center}
+caption{font-style:italic}
+h1{font-family:Helvetica;font-size:13pt;color:#800000;font-style:normal;font-weight:bold}
+h2{font-family:Helvetica;font-size:12pt;color:#000040;font-style:normal;font-weight:bold}
+h3{font-family:Helvetica;font-size:11pt;color:#000000;font-style:normal;font-weight:bold}
+ul{margin-left:10px}
+ol{margin-left:10px}
+li{margin-bottom:5pt}
+a{color:#003399;text-decoration:none}
+a.manlink{color:#0033cc;text-decoration:none}
+a.fnlink{color:#0033cc;text-decoration:none}
+sup{font-size:0.9em}
+sub{font-size:0.9em}
+blockquote{padding:0.2cm;margin-left:0.2cm;margin-right:0.2cm;background-color:#f2f2f2;font-family:Helvetica;font-size:11pt;color:#333333}
+code, pre{font-family:Helvetica;font-size:11pt;color:#333333}
+.reflist{font-family:Helvetica;font-size:10pt;color:#333333;font-style:normal;font-weight:normal;margin-bottom:5px}
+.hs_kw{background-color:#ffff66;color:#0000ff;font-size:1.0em;}
+.hs_sr{background-color:#ffff66;color:#0000ff;font-size:1.0em;}
+.hs_ls{background-color:#ffff66;color:#0000ff;font-size:1.0em;}
+.entryrating{background-color:#555555;padding:8px;font-family:Helvetica;font-size:10pt;color:#F4F4F4}
+.elink, .tslink, .rlink {color:#F4F4F4}
+.crtitle{margin:0px;padding:0px;width:1%;vertical-align:top;padding-top:4px}
+.crtitle a{color:#F4F4F4}
+.mlink {margin:0px;padding:0px;padding-top:4px}
+.mlink a{color:#F4F4F4}
+.tabentryrating{border-collapse:collapse;border:none;margin:0px;padding:0px;width:100%}
+.leftcellentryrating{margin:0px;padding:0px;width:30%}
+.midcellentryrating{margin:0px;padding:0px;width:45%}
+.rightcellentryrating{margin:0px;padding:0px;width:25%}
+.content{background-color:#ffffff;padding:8px;padding-bottom:20px}
+.appendixcontent{background-color:#ffffff;padding:8px}
+.appendixcontent h1{font-family:Helvetica;font-size:13pt;color:#555555;font-style:normal;font-weight:bold;margin:0;padding:0}
+.attachments ul{color:#003399;font-size:9pt;margin-left:10px}
+.attachments ul a{color:#003399;text-decoration:none}
+.remarks{font-family:Helvetica;font-size:10px;color:#333333;font-style:normal;font-weight:normal;margin-top:5px}
+.deskhead{font-family:Helvetica;font-size:14pt;color:#000000;font-style:normal;font-weight:bold}
+.author{font-family:Helvetica;font-size:10pt;color:#333333;font-style:normal;font-weight:normal}
+</style><div class="content"></head><body><h1><a name="z_1">1a_triangleInequality</a></h1>
+<p class="zettelcontent">The triangle inequality states that, in a triangle with sides AB, BC, CA: <br>For all possible sides:<br>AB + BC &gt;= CA (otherwise we can not close the triangle)<br><br>In single-prototype word vector spaces, words can be inappropriately close:<br>bank - finance - shore<br>We have that bank-shore + bank-finance &lt; finance-shore, due to the "double-nature" (and more) of 'bank'<br></p><h4>Authors</h4>
+<ul class="author"><li>J.Resinger & R.J.Mooney 2010 - "Multi-Prototype Vector-Space Models of Word Meaning"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Checks</li>
+</ul>
+<h1><a name="z_2">1b_polysemicEmbeddings</a></h1>
+<p class="zettelcontent">The meaning of a word depends on the context:<br>"The player hit the ball with the bat"<br>vs.<br>"The bat flew out of the cave"<br><br>Later work in 2015 questions the effectiveness of Multi-Sense VSMs. However, BERT and other more recent instruments use a fluid, implicit, "continuous" version of polysemy:<br>contextual embeddings. </p><h4>Authors</h4>
+<ul class="author"><li>J.Resinger & R.J.Mooney 2010 - "Multi-Prototype Vector-Space Models of Word Meaning"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Comparison</li>
+</ul>
+<h1><a name="z_3">1c</a></h1>
+<p class="zettelcontent">A possible method to determine the sense of a word:<br>given a number of different sense vectors for w, <br>given a context (those vectors do not need to be all discriminated - we can pick the average of senses if needed),<br>choose the sense that is the closest to the context (i.e. closest to the average of word vectors)</p><h4>Authors</h4>
+<ul class="author"><li>J.Resinger & R.J.Mooney 2010 - "Multi-Prototype Vector-Space Models of Word Meaning"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Sense Disambiguation</li>
+</ul>
+<h1><a name="z_4">1d_CentroidsAreSenses</a></h1>
+<p class="zettelcontent">- Represent the contexts<br>- Cluster them<br>- The resulting cluster centroids will be the word sense embeddings</p><h4>Authors</h4>
+<ul class="author"><li>J.Resinger & R.J.Mooney 2010 - "Multi-Prototype Vector-Space Models of Word Meaning"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Context-based</li>
+<li>Sense Creation</li>
+</ul>
+<h1><a name="z_5">1e_clustering_movMF</a></h1>
+<p class="zettelcontent">Clustering method used: <br><br>movMF, moving von-Mises-Fischer distributions:<br><br>Uses cosine similarity as the distance measure, plus a concentration parameter to regulate the cluster size</p><h4>Authors</h4>
+<ul class="author"><li>J.Resinger & R.J.Mooney 2010 - "Multi-Prototype Vector-Space Models of Word Meaning"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Clustering</li>
+</ul>
+<h1><a name="z_6">1f</a></h1>
+<p class="zettelcontent">To create the context vectors, we do not use pre-trained embeddings of any sort.<br><br>Instead, for each unigram (a.k.a. word) in a window of size 5+5=10, we use Features:<br>either Tf-Idf features, or chi^2 features<br><br>e.g. a specific Tf-Idf value is associated with a specific word. Although it is a continuous-interval score where different words may end up being close (even worse for rare words), and this partially muddies the waters of distinguishing which word is which</p><h4>Authors</h4>
+<ul class="author"><li>J.Resinger & R.J.Mooney 2010 - "Multi-Prototype Vector-Space Models of Word Meaning"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>No Pre-trained embeddings</li>
+<li>Start</li>
+<li>What vectors are made of</li>
+</ul>
+<h1><a name="z_7">1g</a></h1>
+<p class="zettelcontent">AvgSim takes the average of all possible pairs of senses.<br>MaxSim takes only the 2 closest vectors<br><br>AvgSimC corresponds to soft cluster assignment. It assigns different weights to similarity pairs, depending on the probability of each context to belong to that particular cluster of the word:<br>p(c,w,k)*p(c',w',j) * dist(&#960;_k(w), &#960;_j(w'))</p><h4>Authors</h4>
+<ul class="author"><li>J.Resinger & R.J.Mooney 2010 - "Multi-Prototype Vector-Space Models of Word Meaning"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Word Similarity Measures</li>
+</ul>
+<h1><a name="z_8">1h</a></h1>
+<p class="zettelcontent">The authors employed, as alternatives, 2 datasets for training:<br>- Wikipedia-2009, taking away all short articles with &lt; 100 words, for a total of 2.05B words<br>- English Gigaword corpus, containing mainly news items, 3.9 B words<br><br>Review of the method: <br>- determine tf-idf (or chi^2) features over the entirety of the corpus, for all words<br>- For each word in the vocabulary:<br>    . Encode all the contexts (10 words)<br>    . Run the clustering algorithm over the contexts<br>    . The cluster centroids are the sense<br>      embeddings for the word </p><h4>Authors</h4>
+<ul class="author"><li>J.Resinger & R.J.Mooney 2010 - "Multi-Prototype Vector-Space Models of Word Meaning"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Training Datasets</li>
+</ul>
+<h1><a name="z_9">1i</a></h1>
+<p class="zettelcontent">Evaluation: WordSim-353, Spearman&#8217;s rank correlation (&#961;) with the average human judgement<br><br>Note: it is also interesting to compare the variance in &#961; for a given word (sense) with the variance of the evaluations of the human annotators. <br>If it is equivalent, we are in acceptable range.</p><h4>Authors</h4>
+<ul class="author"><li>J.Resinger & R.J.Mooney 2010 - "Multi-Prototype Vector-Space Models of Word Meaning"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Evaluation</li>
+<li>Idea</li>
+</ul>
+<h1><a name="z_10">2a</a></h1>
+<p class="zettelcontent">Their proposed method can not be used as a Language Model, because the score_global component looks at the entire document</p><h4>Authors</h4>
+<ul class="author"><li>Eric H. Huang et al. 2012 - "ImprovingWord Representations via Global Context and Multiple Word Prototypes"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Caveat</li>
+</ul>
+<h1><a name="z_11">2b</a></h1>
+<p class="zettelcontent">Our local+global FF-NN architecture has the following training objective:<br><br>given the original sequence s,<br>and the sequence with the last word replaced by another word w in the vocabulary,<br><br>we aim to obtain a score g(s,d) that must be greater than the score for g(s^w,d), with a margin of 1</p><h4>Authors</h4>
+<ul class="author"><li>Eric H. Huang et al. 2012 - "ImprovingWord Representations via Global Context and Multiple Word Prototypes"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Start</li>
+</ul>
+<h1><a name="z_12">2c</a></h1>
+<p class="zettelcontent">We previously created our single-prototype word embeddings from the FF-NNs & local + global score.<br><br>We proceed to create, and then to refine the senses:<br><br>1) The contexts are the average over the vectors of a window of 5+5=10 words<br><br>2) Cluster the contexts with spherical k-means<br><br>3) Re-label each word occurrence to its closest cluster, and then re-train sense embeddings with Skip-Gram</p><h4>Authors</h4>
+<ul class="author"><li>Eric H. Huang et al. 2012 - "ImprovingWord Representations via Global Context and Multiple Word Prototypes"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Context-based</li>
+<li>Sense Creation</li>
+<li>Sense Disambiguation</li>
+</ul>
+<h1><a name="z_13">2d</a></h1>
+<p class="zettelcontent"><br>The authors used Wikipedia(2010) to train the word (and then sense) vectors.<br>990 million tokens<br><br>Vocabulary = 30,000 most frequent words in Wikipedia2010</p><h4>Authors</h4>
+<ul class="author"><li>Eric H. Huang et al. 2012 - "ImprovingWord Representations via Global Context and Multiple Word Prototypes"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Training Datasets</li>
+<li>Vocabulary</li>
+</ul>
+<h1><a name="z_14">2e</a></h1>
+<p class="zettelcontent">In all experiments:<br><br>- dimensionality of word embeddings d = 50<br>Very low. If they managed to obtain near-SoA results on WS-353 and SWSC, it is notable.<br><br>- units in the hidden layer of FF-NN h = 100.<br>Again, low. However, the embeddings matrix to update still includes a considerable number of parameters, especially in the senses' case.<br><br>- No drop-out or regularization.<br>Not an optimal choice. How much could the performance have improved?<br><br>- Number of senses fixed to K = 10.<br>Possibly the biggest problem.<br></p><h4>Authors</h4>
+<ul class="author"><li>Eric H. Huang et al. 2012 - "ImprovingWord Representations via Global Context and Multiple Word Prototypes"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Hyperparameters</li>
+<li>Idea</li>
+</ul>
+<h1><a name="z_15">2f</a></h1>
+<p class="zettelcontent">2 measures of evaluation were applied:<br><br>The &#961; X 100 S.-correlation on WS-353<br><br>The same measure on the newly created SCWS (Stanford's Contextual Word Similarities) dataset, which has 2003 pairs of word similarity in context.<br>(and therefore, it is much better for multi-sense evaluation. For instance we can use AvgSimC)</p><h4>Authors</h4>
+<ul class="author"><li>Eric H. Huang et al. 2012 - "ImprovingWord Representations via Global Context and Multiple Word Prototypes"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Evaluation</li>
+</ul>
+<h1><a name="z_16">3a</a></h1>
+<p class="zettelcontent">A problem:<br>how to decide an appropriate number of senses for each word?<br>Using a fixed number (e.g. K=10, as in Huang et al. 2012) will be less than indeal for a number of words, inevitably.<br><br>The solution proposed here is simple: <br>Use the senses in WordNet, provided by the human expert annotators</p><h4>Authors</h4>
+<ul class="author"><li>X.Chen et al. 2014 - "A Unified Model forWord Sense Representation and Disambiguation"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Sense Creation</li>
+</ul>
+<h1><a name="z_17">3b</a></h1>
+<p class="zettelcontent">As the first step, we simply apply Skip-Gram to initialize single-prototype word vectors</p><h4>Authors</h4>
+<ul class="author"><li>X.Chen et al. 2014 - "A Unified Model forWord Sense Representation and Disambiguation"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Start</li>
+</ul>
+<h1><a name="z_18">3c</a></h1>
+<p class="zettelcontent">Senses are initialized using the Glosses from WordNet.<br><br>Glosses are defined as: <br>definition + examples<br><br>We take the average of all the 'candidate word vectors' in the text of the gloss.<br>Candidates must have a &gt; &#948; cosine similarity with the target word w, and their set of possible PoS-tags must have a non-empty intersection with {PoS(w)}</p><h4>Authors</h4>
+<ul class="author"><li>X.Chen et al. 2014 - "A Unified Model forWord Sense Representation and Disambiguation"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Idea</li>
+<li>Sense Creation</li>
+</ul>
+<h1><a name="z_19">3d</a></h1>
+<p class="zettelcontent">The sense is assigned based on the cosine-sim of the previously initialized Sense Vectors to the context of the word occurrence.<br><br>There are 2 variants: <br>In a sentence, we can operate with <br>- L2R, Left2Right<br>- S2C, Simple2Complex, that starts from the words that have fewer senses to disambiguate from.<br><br>(Obviously, when we have chosen a sense, we modify the vector in the context and update the context representation. Otherwise, the update order would not matter)<br><br>Then, the senses are distributionally refined with Skip-Gram over the corpus</p><h4>Authors</h4>
+<ul class="author"><li>X.Chen et al. 2014 - "A Unified Model forWord Sense Representation and Disambiguation"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Idea</li>
+<li>Sense Disambiguation</li>
+</ul>
+<h1><a name="z_20">3e</a></h1>
+<p class="zettelcontent"><br>Evaluation:  <br><br>- WS-353 <br>- Stanford&#8217;s Contextual Word Similarities (SCWS)<br><br>and two standard WSD tasks: <br>- the Sports and Finance sections of the Reuters corpus (2005) <br>- SemEval 2007 (coarse-grained all-words WSD task)</p><h4>Authors</h4>
+<ul class="author"><li>X.Chen et al. 2014 - "A Unified Model forWord Sense Representation and Disambiguation"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Evaluation</li>
+</ul>
+<h1><a name="z_21">3f</a></h1>
+<p class="zettelcontent"><br>Training on: Wikipedia2013, 1 billion tokens.  <br><br>dimension of the vector representations d=200.  <br><br>We use WordNet as our sense inventory.</p><h4>Authors</h4>
+<ul class="author"><li>X.Chen et al. 2014 - "A Unified Model forWord Sense Representation and Disambiguation"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Hyperparameters</li>
+<li>Training Datasets</li>
+</ul>
+<h1><a name="z_22">4a</a></h1>
+<p class="zettelcontent">The purpose of AutoExtend is to introduce embeddings for synsets and lexemes(=lemmas)<br><br>(Baseline and alternative: build a synset embedding as the simple sum of its lemmas)<br><br>Basic premise of the model: the embeddings for both words and synsets can be built as linear combinations of their lemmas</p><h4>Authors</h4>
+<ul class="author"><li>S.Rothe & H.Schutze 2015 - "AutoExtend: ExtendingWord Embeddings to Embeddings for Synsets and Lexemes"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Dictionary/KB resources</li>
+<li>Linearity assumption</li>
+<li>Start</li>
+</ul>
+<h1><a name="z_23">4b</a></h1>
+<p class="zettelcontent">Overall architecture:<br>word embeddings (possibly pre-trained) <br>-&gt; encode &gt; synset embeddings <br>-&gt; decode &gt; re-create word embeddings<br><br>In part 1, we express synsets as a sum of word embeddings. Which word embeddings to include is determined by the lemmas (lexemes), <br>We define a parameter (sub)matrix E_ij:<br>s(j) = &#931;_i l(i,j) * w(i) = &#931;_i E_ij * w(i)<br><br>This can be expressed as S = E x W</p><h4>Authors</h4>
+<ul class="author"><li>S.Rothe & H.Schutze 2015 - "AutoExtend: ExtendingWord Embeddings to Embeddings for Synsets and Lexemes"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Autoencoding</li>
+</ul>
+<h1><a name="z_24">4c</a></h1>
+<p class="zettelcontent">When we decode synset embeddings into word embeddings, we obtain the lexemes from the synsets as follows:<br>l'(j,i) = &#931;_j D_ji * s(j)<br>W' = D x S = D x E x W<br><br>and the final training objective is:<br>argmin(E,D) : || W' - W || = || D x E x W - W ||<br><br>(n: D and E are vast, 4-dimensional, but very sparse matrices)</p><h4>Authors</h4>
+<ul class="author"><li>S.Rothe & H.Schutze 2015 - "AutoExtend: ExtendingWord Embeddings to Embeddings for Synsets and Lexemes"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Autoencoding</li>
+<li>Training objective</li>
+</ul>
+<h1><a name="z_25">4d</a></h1>
+<p class="zettelcontent"><br>Starting from the pre-trained GoogleNews Vectors from word2vec, with dimensionality d=300  <br><br>Word Sense Disambiguation tasks: <br>Senseval-2, <br>Senseval-3, <br>IMS. <br><br>Word Similarity tasks: <br>SCWS, computing the final lexeme embedding using AvgSimC over all the l(i,j) for word w(i).</p><h4>Authors</h4>
+<ul class="author"><li>S.Rothe & H.Schutze 2015 - "AutoExtend: ExtendingWord Embeddings to Embeddings for Synsets and Lexemes"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Evaluation</li>
+<li>Hyperparameters</li>
+</ul>
+<h1><a name="z_26">5a</a></h1>
+<p class="zettelcontent">MSSG, Multi-Sense Skip-Gram model: <br><br>Jointly learns the sense and updates it.<br><br>Context vectors are created as the average of initial global (Skip-Gram) word vectors.<br><br>Contexts are clustered (based on cosine distance). <br>A word occurence is assigned a sense, based on the closeness of its context window to the (existing) clusters.<br>Then, we also adjust the sense representation by instructing it to Skip-Gram predict its surrounding context.  <br></p><h4>Authors</h4>
+<ul class="author"><li>A. Neelakantan et al., 2015, "Efficient Non-parametric Estimation of Multiple Embeddings perWord in Vector Space"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Context-based</li>
+<li>Sense Creation</li>
+<li>Sense Disambiguation</li>
+<li>Start</li>
+</ul>
+<h1><a name="z_27">5b</a></h1>
+<p class="zettelcontent">The Non-Parametric variant of MSSG manages to form a different number of senses per word. <br><br>For every new context, a new cluster (and therefore a new sense) is created if the cosine distance between the context embedding and any cluster centroid is &gt; &#955;</p><h4>Authors</h4>
+<ul class="author"><li>S.Rothe & H.Schutze 2015 - "AutoExtend: ExtendingWord Embeddings to Embeddings for Synsets and Lexemes"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Sense Creation</li>
+</ul>
+<h1><a name="z_28">5c </a></h1>
+<p class="zettelcontent">Training on the same corpus used in Huang et al (2012), Wikipedia2010 with 990 million tokens.<br><br>For the vocabulary, we remove all the words with less than 20 occurrences<br><br>MSSG has a fixed number of K=3 senses. (n: the performance is comparable, and often better)<br><br>NP-MSSG has &#955;=-0.5  <br><br>Context window size at 5+5 = 10</p><h4>Authors</h4>
+<ul class="author"><li>A. Neelakantan et al., 2015, "Efficient Non-parametric Estimation of Multiple Embeddings perWord in Vector Space"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Hyperparameters</li>
+<li>Training</li>
+<li>Vocabulary</li>
+</ul>
+<h1><a name="z_29">5d</a></h1>
+<p class="zettelcontent">Word Similarity Datasets: <br>- WS-353 <br>- SCWS  <br><br>Similarity measures used: <br>AvgSim, <br>AvgSimC, <br>GlobalSim (aka only the global context vector for the word, ignoring the senses),<br>LocalSim (aka hard cluster assignment, selecting 1 sense vector depending on the context)  <br><br>AvgSimC has the best results by far</p><h4>Authors</h4>
+<ul class="author"><li>A. Neelakantan et al., 2015, "Efficient Non-parametric Estimation of Multiple Embeddings perWord in Vector Space"</li>
+</ul>
+<h4>Keywords</h4>
+<ul class="list_keywords"><li>Evaluation</li>
+<li>Word Similarity Measures</li>
+</ul>
+</div></body></html>
